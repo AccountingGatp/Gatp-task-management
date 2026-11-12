@@ -1,0 +1,314 @@
+@import "tailwindcss";
+@import "@fontsource-variable/inter";
+
+/*
+  GATP design tokens — adapted from the Lucide reference (cool greys, one coral accent, Inter)
+  and Apple's interface principles (instant press feedback, translucent chrome, size-specific tracking).
+  Coral is reserved for the brand mark and for "over capacity / overdue" — it always means attention.
+*/
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --color-paper: #ffffff;
+  --color-canvas: #f6f6f7;
+  --color-ink: #1f1f23;
+  --color-graphite: #5f5f66;
+  --color-fog: #8e8e94;
+  --color-rule: #e2e2e3;
+  --color-rule-soft: #ebebef;
+  --color-mist: #d4d4da;
+
+  --color-coral: #f67373;
+  --color-coral-soft: #fdecec;
+  --color-brick: #b03636;
+
+  --color-indigo: #3a5ccc;
+  --color-indigo-soft: #eaeefb;
+  --color-green: #18794e;
+  --color-green-soft: #e4f3eb;
+  --color-amber: #8a5426;
+  --color-amber-soft: #f8efe4;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-3: 0 12px 32px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.08);
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-canvas text-ink;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    font-feature-settings: "cv11", "ss01";
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-indigo);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: var(--color-coral-soft);
+  }
+}
+
+@layer components {
+  /* Type ramp: tighter tracking as size grows */
+  .t-title {
+    font-size: 1.5rem;
+    line-height: 1.15;
+    font-weight: 650;
+    letter-spacing: -0.022em;
+  }
+  .t-section {
+    font-size: 0.9375rem;
+    line-height: 1.3;
+    font-weight: 600;
+    letter-spacing: -0.008em;
+  }
+  .t-figure {
+    font-size: 1.75rem;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .t-meta {
+    font-size: 0.8125rem;
+    color: var(--color-graphite);
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Buttons respond on press, not on release */
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md border border-rule bg-paper px-3 font-medium text-ink;
+    height: 2rem;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+    box-shadow: var(--shadow-1);
+    transition: transform 100ms ease-out, background-color 120ms ease, border-color 120ms ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .btn:hover {
+    @apply bg-canvas;
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .btn-primary {
+    @apply border-ink bg-ink text-paper;
+  }
+  .btn-primary:hover {
+    background: #34343a;
+  }
+  .btn-danger {
+    @apply border-rule text-brick;
+  }
+  .btn-ghost {
+    @apply border-transparent bg-transparent shadow-none;
+  }
+  .btn-ghost:hover {
+    @apply bg-rule-soft;
+  }
+  .btn-sm {
+    height: 1.75rem;
+    padding-inline: 0.5rem;
+    font-size: 0.75rem;
+  }
+  .btn-icon {
+    width: 2rem;
+    padding: 0;
+  }
+
+  .field {
+    @apply flex flex-col gap-1.5;
+  }
+  .label {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+  .hint {
+    font-size: 0.75rem;
+    color: var(--color-graphite);
+  }
+  .input,
+  .select,
+  .textarea {
+    @apply w-full rounded-md border border-rule bg-paper px-2.5 text-ink;
+    height: 2.125rem;
+    font-size: 0.8125rem;
+    transition: border-color 120ms ease, box-shadow 120ms ease;
+  }
+  .textarea {
+    height: auto;
+    min-height: 4.5rem;
+    padding-block: 0.5rem;
+    resize: vertical;
+  }
+  .select {
+    appearance: none;
+    padding-right: 1.75rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238e8e94' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m7 15 5 5 5-5'/%3E%3Cpath d='m7 9 5-5 5 5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.4rem center;
+    background-size: 14px;
+  }
+  .input:hover,
+  .select:hover,
+  .textarea:hover {
+    border-color: var(--color-mist);
+  }
+  .input:focus,
+  .select:focus,
+  .textarea:focus {
+    outline: none;
+    border-color: var(--color-indigo);
+    box-shadow: 0 0 0 3px var(--color-indigo-soft);
+  }
+
+  .panel {
+    @apply rounded-lg border border-rule bg-paper;
+  }
+
+  /* Data tables: dense, hairline rows, numbers right-aligned */
+  .table {
+    @apply w-full border-collapse text-left;
+    font-size: 0.8125rem;
+  }
+  .table th {
+    @apply border-b border-rule px-3 py-2 font-medium text-graphite;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    background: var(--color-paper);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .table td {
+    @apply border-b border-rule-soft px-3 py-2.5 align-middle;
+  }
+  .table tr:last-child td {
+    border-bottom: 0;
+  }
+  .table tbody tr:hover td {
+    background: #fafafb;
+  }
+  .table .r {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .link {
+    @apply text-ink underline decoration-mist underline-offset-2;
+    transition: text-decoration-color 120ms ease;
+  }
+  .link:hover {
+    text-decoration-color: var(--color-ink);
+  }
+
+  /* Translucent chrome: content scrolls beneath */
+  .material {
+    background: rgba(246, 246, 247, 0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+  }
+  .material-light {
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+  }
+
+  /* Capacity ruler — the one signature element. Fills on first paint only. */
+  .ruler-fill {
+    transform-origin: left center;
+    animation: ruler-grow 700ms var(--ease-out-quint) both;
+  }
+  .over-hatch {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--color-coral) 0 4px,
+      #f89a9a 4px 7px
+    );
+  }
+
+  .sheet-enter {
+    animation: sheet-in 260ms var(--ease-out-quint) both;
+  }
+  .drawer-enter {
+    animation: drawer-in 280ms var(--ease-out-quint) both;
+  }
+  .scrim-enter {
+    animation: fade-in 200ms ease both;
+  }
+  .toast-enter {
+    animation: toast-in 240ms var(--ease-out-quint) both;
+  }
+}
+
+@keyframes ruler-grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes sheet-in {
+  from { transform: translateY(12px) scale(0.985); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+@keyframes drawer-in {
+  from { transform: translateX(-100%); }
+  to { transform: none; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes toast-in {
+  from { transform: translateY(8px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+  .btn:active {
+    transform: none;
+  }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .material, .material-light {
+    background: var(--color-canvas);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
+@media (prefers-contrast: more) {
+  .table td { border-bottom-color: var(--color-mist); }
+  .btn, .input, .select, .textarea, .panel { border-color: var(--color-graphite); }
+}
+@media print {
+  aside, .no-print { display: none !important; }
+  body { background: white; }
+}
